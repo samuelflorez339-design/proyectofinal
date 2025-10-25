@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>RETOPREPARATE - Evaluaciones</title>
+  <style>
+    :root{--brand:#0d6efd;--bg:#f5f7fb;--card:#ffffff}
+    *{box-sizing:border-box}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;margin:0;background:linear-gradient(180deg,var(--bg),#ffffff);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+    .container{width:100%;max-width:960px}
+    .card{background:var(--card);border-radius:12px;box-shadow:0 6px 24px rgba(12,20,40,0.08);padding:28px}
+    .center{display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center}
+    h1{margin:0 0 8px;font-size:22px}
+    p.lead{margin:0 0 16px;color:#444}
+    .pin-row{display:flex;gap:12px;align-items:center;justify-content:center;margin-top:12px;flex-wrap:wrap}
+    input[type="password"]{font-size:18px;padding:10px 12px;border-radius:8px;border:1px solid #d6dbe6;width:180px;text-align:center}
+    button.btn{cursor:pointer;border:0;padding:10px 14px;border-radius:8px;font-weight:600}
+    button.primary{background:var(--brand);color:#fff}
+    button.ghost{background:transparent;border:1px solid #d6dbe6;color:#333}
+    .muted{color:#666;font-size:14px;margin-top:8px}
+    .hidden{display:none}
+    .subjects{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:18px}
+    .subject{padding:14px;border-radius:10px;border:1px solid #e6e9f0;background:linear-gradient(180deg,#fff,#fbfdff);text-align:left}
+    .subject h3{margin:0 0 6px;font-size:16px}
+    .subject p{margin:0;color:#555;font-size:14px}
+    nav.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .small{font-size:13px;color:#666}
+    footer{margin-top:16px;text-align:center;color:#888;font-size:13px}
+    .question{margin-top:12px}
+    .options{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+    .opt{padding:10px;border-radius:8px;border:1px solid #e6e9f0;background:#fff;text-align:left;cursor:pointer}
+    .opt.selected{outline:2px solid rgba(13,110,253,0.18);background:#f6f9ff}
+    .controls{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:8px;flex-wrap:wrap}
+    .link{background:transparent;border:0;color:var(--brand);cursor:pointer;text-decoration:underline;padding:6px}
+    .alert{color:#b00020;font-size:14px;margin-top:10px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- LOGIN -->
+    <section id="loginCard" class="card center">
+      <h1>RETOPREPARATE</h1>
+      <p class="lead">Aplicación web interactiva de evaluaciones</p>
+      <p class="muted">Introduce el PIN (1234) para acceder</p>
+      <div class="pin-row">
+        <input id="pin" type="password" maxlength="6" placeholder="PIN">
+        <button id="enterBtn" class="btn primary">Entrar</button>
+      </div>
+      <div id="loginError" class="muted" style="color:#b00020;margin-top:12px"></div>
+    </section>
+
+    <!-- MENÚ -->
+    <section id="menuCard" class="card hidden">
+      <nav class="top">
+        <div>
+          <h2 style="margin:0;font-size:18px">Evaluaciones</h2>
+          <div class="small">Selecciona una materia</div>
+        </div>
+        <div><button id="logoutBtn" class="link">Cerrar sesión</button></div>
+      </nav>
+
+      <div class="subjects">
+        <div class="subject"><h3>Matemáticas</h3><p>Operaciones y álgebra.</p><button class="btn primary startBtn" data-sub="matematicas">Iniciar</button></div>
+        <div class="subject"><h3>Física</h3><p>Conceptos básicos de física.</p><button class="btn primary startBtn" data-sub="fisica">Iniciar</button></div>
+        <div class="subject"><h3>Química</h3><p>Nociones básicas de química.</p><button class="btn primary startBtn" data-sub="quimica">Iniciar</button></div>
+        <div class="subject"><h3>Lenguaje</h3><p>Comprensión y gramática.</p><button class="btn primary startBtn" data-sub="lenguaje">Iniciar</button></div>
+      </div>
+      <footer>Sube el repositorio a GitHub Pages para el despliegue final.</footer>
+    </section>
+
+    <!-- EVALUACIÓN -->
+    <section id="quizCard" class="card hidden">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <h2 id="quizTitle" style="margin:0;font-size:18px">Título</h2>
+          <div class="small">Pregunta <span id="cur">1</span>/<span id="tot">1</span></div>
+        </div>
+        <button id="backMenu" class="link">Volver</button>
+      </div>
+
+      <div id="questionArea" class="question"></div>
+
+      <div class="controls">
+        <div>
+          <button id="prevQ" class="btn ghost">Anterior</button>
+          <button id="nextQ" class="btn ghost">Siguiente</button>
+        </div>
+        <button id="submitBtn" class="btn primary">Enviar evaluación</button>
+      </div>
+
+      <div id="alertMsg" class="alert hidden"></div>
+      <div id="resultArea" class="hidden" style="margin-top:12px"></div>
+    </section>
+  </div>
+
+<script>
+// ======== BANCO DE PREGUNTAS ========
+const bank = {
+  matematicas: {
+    title: 'Matemáticas - Evaluación',
+    questions: [
+      {q:'¿Cuánto es 7 × 8?', options:['54','56','63','58'], a:1},
+      {q:'¿Cuánto es 12 ÷ 3?', options:['3','4','6','5'], a:1},
+      {q:'¿Cuál es la raíz cuadrada de 81?', options:['8','9','7','6'], a:1},
+      {q:'¿Cuál es la derivada de x²?', options:['2x','x','x²','1'], a:0},
+      {q:'¿Qué número es primo?', options:['4','6','9','7'], a:3}
+    ]
+  },
+  fisica: {
+    title: 'Física - Evaluación',
+    questions: [
+      {q:'La unidad de fuerza en el SI es:', options:['Joule','Newton','Pascal','Watt'], a:1},
+      {q:'La velocidad es:', options:['Vector','Escalar','Constante','Energía'], a:0},
+      {q:'La aceleración mide:', options:['Cambio de velocidad','Distancia','Tiempo','Energía'], a:0},
+      {q:'El símbolo de la fuerza es:', options:['P','A','F','N'], a:2},
+      {q:'La fórmula de la energía cinética es:', options:['m×g','½mv²','mgh','v/t'], a:1}
+    ]
+  },
+  quimica: {
+    title: 'Química - Evaluación',
+    questions: [
+      {q:'¿Qué es un átomo?', options:['Unidad básica de la materia','Molécula','Compuesto','Ion'], a:0},
+      {q:'Símbolo del oxígeno:', options:['O','Ox','Oy','Oz'], a:0},
+      {q:'El agua es un:', options:['Elemento','Compuesto','Mezcla','Gas'], a:1},
+      {q:'Número atómico del carbono:', options:['12','6','8','14'], a:1},
+      {q:'El H₂O está formado por:', options:['1 hidrógeno y 2 oxígenos','2 hidrógenos y 1 oxígeno','2 oxígenos y 2 hidrógenos','1 oxígeno y 3 hidrógenos'], a:1}
+    ]
+  },
+  lenguaje: {
+    title: 'Lenguaje - Evaluación',
+    questions: [
+      {q:'¿Cuál es un verbo?', options:['Rápido','Correr','Hermoso','Casa'], a:1},
+      {q:'El sujeto en "Pedro lee un libro" es:', options:['Pedro','lee','libro','ninguno'], a:0},
+      {q:'¿Cuál es un sustantivo?', options:['Bonito','Mesa','Correr','Grande'], a:1},
+      {q:'¿Qué signo se usa para una pregunta?', options:['!','¿?','...',';'], a:1},
+      {q:'El plural de "flor" es:', options:['flores','floros','flor','floras'], a:0}
+    ]
+  }
+};
+
+// ======== ESTADO Y ELEMENTOS ========
+let state = {subject:null, idx:0, answers:[]};
+const loginCard=document.getElementById('loginCard'),menuCard=document.getElementById('menuCard'),quizCard=document.getElementById('quizCard');
+const pin=document.getElementById('pin'),enterBtn=document.getElementById('enterBtn'),loginError=document.getElementById('loginError');
+const startBtns=document.getElementsByClassName('startBtn'),logoutBtn=document.getElementById('logoutBtn'),backMenu=document.getElementById('backMenu');
+const quizTitle=document.getElementById('quizTitle'),cur=document.getElementById('cur'),tot=document.getElementById('tot'),questionArea=document.getElementById('questionArea');
+const prevQ=document.getElementById('prevQ'),nextQ=document.getElementById('nextQ'),submitBtn=document.getElementById('submitBtn'),resultArea=document.getElementById('resultArea');
+const alertMsg=document.getElementById('alertMsg');
+
+// ======== FUNCIONES ========
+function show(e){e.classList.remove('hidden');}
+function hide(e){e.classList.add('hidden');}
+
+function goMenu(){state.subject=null;state.idx=0;state.answers=[];hide(quizCard);show(menuCard);hide(alertMsg);}
+function startSubject(s){
+  state.subject=s;state.idx=0;
+  state.answers=Array(bank[s].questions.length).fill(null);
+  tot.textContent=bank[s].questions.length;
+  renderQuestion();
+  hide(menuCard);show(quizCard);
+}
+
+function renderQuestion(){
+  const s=state.subject,i=state.idx,q=bank[s].questions[i];
+  quizTitle.textContent=bank[s].title;
+  cur.textContent=i+1;tot.textContent=bank[s].questions.length;
+  questionArea.innerHTML='';
+  const qh=document.createElement('div');
+  qh.innerHTML='<p><strong>'+q.q+'</strong></p>';
+  const opts=document.createElement('div');opts.className='options';
+  q.options.forEach((opt,j)=>{
+    const b=document.createElement('div');
+    b.className='opt'+(state.answers[i]===j?' selected':'');
+    b.textContent=(j+1)+'. '+opt;
+    b.addEventListener('click',()=>selectOption(i,j,b));
+    opts.appendChild(b);
+  });
+  qh.appendChild(opts);
+  questionArea.appendChild(qh);
+  prevQ.disabled=i===0;
+  nextQ.disabled=i===bank[s].questions.length-1;
+  hide(resultArea); hide(alertMsg);
+}
+
+function selectOption(qi,oi,el){
+  state.answers[qi]=oi;
+  const opts=questionArea.querySelectorAll('.opt');
+  opts.forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ======== EVENTOS ========
+enterBtn.onclick=()=>{
+  if(pin.value==='1234'){
+    hide(loginCard);show(menuCard);
+  }else{
+    loginError.textContent='PIN incorrecto.';
+  }
+};
+Array.from(startBtns).forEach(b=>b.onclick=e=>startSubject(e.target.dataset.sub));
+logoutBtn.onclick=()=>{hide(menuCard);show(loginCard);}
+backMenu.onclick=goMenu;
+prevQ.onclick=()=>{if(state.idx>0){state.idx--;renderQuestion();}};
+nextQ.onclick=()=>{if(state.idx<bank[state.subject].questions.length-1){state.idx++;renderQuestion();}};
+submitBtn.onclick=()=>{
+  const qs=bank[state.subject].questions;
+  if(state.answers.includes(null)){
+    alertMsg.textContent='⚠️ Debes responder todas las preguntas antes de enviar.';
+    show(alertMsg);
+    return;
+  }
+  hide(alertMsg);
+  let c=0;
+  for(let i=0;i<qs.length;i++)if(state.answers[i]===qs[i].a)c++;
+  resultArea.innerHTML=`<div><h3>Resultado</h3>
+    <p>Correctas: ${c} / ${qs.length}</p>
+    <p>Porcentaje: ${Math.round(c/qs.length*100)}%</p>
+    <button id="retake" class="btn ghost">Reintentar</button>
+    <button id="toMenu" class="btn link">Volver</button></div>`;
+  show(resultArea);
+  document.getElementById('retake').onclick=()=>{state.answers=Array(bank[state.subject].questions.length).fill(null);state.idx=0;renderQuestion();};
+  document.getElementById('toMenu').onclick=goMenu;
+};
+</script>
+</body>
+</html>
