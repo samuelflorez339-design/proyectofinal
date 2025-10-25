@@ -5,52 +5,138 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>RETOPREPARATE - Evaluaciones</title>
   <style>
-    :root{--brand:#0d6efd;--bg:#f5f7fb;--card:#ffffff}
-    *{box-sizing:border-box}
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;margin:0;background:linear-gradient(180deg,var(--bg),#ffffff);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+    /* ==== ESTILOS GENERALES ==== */
+    :root{
+      --brand:#0d6efd; /* Color azul principal */
+      --bg:#f5f7fb;    /* Color de fondo */
+      --card:#ffffff;  /* Fondo de las tarjetas */
+    }
+
+    body{
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      margin:0;
+      background:linear-gradient(180deg,var(--bg),#ffffff);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+
+    /* Contenedor principal */
     .container{width:100%;max-width:960px}
-    .card{background:var(--card);border-radius:12px;box-shadow:0 6px 24px rgba(12,20,40,0.08);padding:28px}
+
+    /* Tarjetas (cajas blancas) */
+    .card{
+      background:var(--card);
+      border-radius:12px;
+      box-shadow:0 6px 24px rgba(12,20,40,0.08);
+      padding:28px;
+    }
+
     .center{display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center}
     h1{margin:0 0 8px;font-size:22px}
     p.lead{margin:0 0 16px;color:#444}
+
+    /* Campos y botones */
     .pin-row{display:flex;gap:12px;align-items:center;justify-content:center;margin-top:12px;flex-wrap:wrap}
-    input[type="password"]{font-size:18px;padding:10px 12px;border-radius:8px;border:1px solid #d6dbe6;width:180px;text-align:center}
-    button.btn{cursor:pointer;border:0;padding:10px 14px;border-radius:8px;font-weight:600}
+    input[type="password"]{
+      font-size:18px;padding:10px 12px;border-radius:8px;border:1px solid #d6dbe6;width:180px;text-align:center
+    }
+    button.btn{
+      cursor:pointer;border:0;padding:10px 14px;border-radius:8px;font-weight:600
+    }
     button.primary{background:var(--brand);color:#fff}
     button.ghost{background:transparent;border:1px solid #d6dbe6;color:#333}
+
+    /* Textos */
     .muted{color:#666;font-size:14px;margin-top:8px}
     .hidden{display:none}
-    .subjects{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:18px}
-    .subject{padding:14px;border-radius:10px;border:1px solid #e6e9f0;background:linear-gradient(180deg,#fff,#fbfdff);text-align:left}
+
+    /* Cuadro de materias */
+    .subjects{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:12px;
+      margin-top:18px
+    }
+
+    .subject{
+      padding:14px;
+      border-radius:10px;
+      border:1px solid #e6e9f0;
+      background:linear-gradient(180deg,#fff,#fbfdff);
+      text-align:left
+    }
+
     .subject h3{margin:0 0 6px;font-size:16px}
     .subject p{margin:0;color:#555;font-size:14px}
-    nav.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+
+    /* Cabecera del menú */
+    nav.top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:12px
+    }
+
     .small{font-size:13px;color:#666}
     footer{margin-top:16px;text-align:center;color:#888;font-size:13px}
+
+    /* Estilos del examen */
     .question{margin-top:12px}
     .options{display:flex;flex-direction:column;gap:8px;margin-top:10px}
-    .opt{padding:10px;border-radius:8px;border:1px solid #e6e9f0;background:#fff;text-align:left;cursor:pointer}
+    .opt{
+      padding:10px;
+      border-radius:8px;
+      border:1px solid #e6e9f0;
+      background:#fff;
+      text-align:left;
+      cursor:pointer
+    }
     .opt.selected{outline:2px solid rgba(13,110,253,0.18);background:#f6f9ff}
-    .controls{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:8px;flex-wrap:wrap}
-    .link{background:transparent;border:0;color:var(--brand);cursor:pointer;text-decoration:underline;padding:6px}
+
+    /* Navegación entre preguntas */
+    .controls{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:14px;
+      gap:8px;
+      flex-wrap:wrap
+    }
+
+    .link{
+      background:transparent;
+      border:0;
+      color:var(--brand);
+      cursor:pointer;
+      text-decoration:underline;
+      padding:6px
+    }
+
     .alert{color:#b00020;font-size:14px;margin-top:10px}
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- LOGIN -->
+    <!-- ================= LOGIN ================= -->
     <section id="loginCard" class="card center">
       <h1>RETOPREPARATE</h1>
       <p class="lead">Aplicación web interactiva de evaluaciones</p>
       <p class="muted">Introduce el PIN (1234) para acceder</p>
+
+      <!-- Entrada de PIN -->
       <div class="pin-row">
         <input id="pin" type="password" maxlength="6" placeholder="PIN">
         <button id="enterBtn" class="btn primary">Entrar</button>
       </div>
+
+      <!-- Mensaje de error de PIN -->
       <div id="loginError" class="muted" style="color:#b00020;margin-top:12px"></div>
     </section>
 
-    <!-- MENÚ -->
+    <!-- ================= MENÚ DE MATERIAS ================= -->
     <section id="menuCard" class="card hidden">
       <nav class="top">
         <div>
@@ -60,17 +146,20 @@
         <div><button id="logoutBtn" class="link">Cerrar sesión</button></div>
       </nav>
 
+      <!-- Botones de cada materia -->
       <div class="subjects">
         <div class="subject"><h3>Matemáticas</h3><p>Operaciones y álgebra.</p><button class="btn primary startBtn" data-sub="matematicas">Iniciar</button></div>
         <div class="subject"><h3>Física</h3><p>Conceptos básicos de física.</p><button class="btn primary startBtn" data-sub="fisica">Iniciar</button></div>
         <div class="subject"><h3>Química</h3><p>Nociones básicas de química.</p><button class="btn primary startBtn" data-sub="quimica">Iniciar</button></div>
         <div class="subject"><h3>Lenguaje</h3><p>Comprensión y gramática.</p><button class="btn primary startBtn" data-sub="lenguaje">Iniciar</button></div>
       </div>
+
       <footer>Sube el repositorio a GitHub Pages para el despliegue final.</footer>
     </section>
 
-    <!-- EVALUACIÓN -->
+    <!-- ================= EVALUACIÓN ================= -->
     <section id="quizCard" class="card hidden">
+      <!-- Cabecera de la evaluación -->
       <div style="display:flex;justify-content:space-between;align-items:center">
         <div>
           <h2 id="quizTitle" style="margin:0;font-size:18px">Título</h2>
@@ -79,8 +168,10 @@
         <button id="backMenu" class="link">Volver</button>
       </div>
 
+      <!-- Contenedor de la pregunta -->
       <div id="questionArea" class="question"></div>
 
+      <!-- Botones de navegación y envío -->
       <div class="controls">
         <div>
           <button id="prevQ" class="btn ghost">Anterior</button>
@@ -89,13 +180,16 @@
         <button id="submitBtn" class="btn primary">Enviar evaluación</button>
       </div>
 
+      <!-- Mensajes y resultado -->
       <div id="alertMsg" class="alert hidden"></div>
       <div id="resultArea" class="hidden" style="margin-top:12px"></div>
     </section>
   </div>
 
 <script>
-// ======== BANCO DE PREGUNTAS ========
+/* =====================================================
+   BANCO DE PREGUNTAS (todas las materias con 5 ítems)
+   ===================================================== */
 const bank = {
   matematicas: {
     title: 'Matemáticas - Evaluación',
@@ -139,36 +233,97 @@ const bank = {
   }
 };
 
-// ======== ESTADO Y ELEMENTOS ========
-let state = {subject:null, idx:0, answers:[]};
-const loginCard=document.getElementById('loginCard'),menuCard=document.getElementById('menuCard'),quizCard=document.getElementById('quizCard');
-const pin=document.getElementById('pin'),enterBtn=document.getElementById('enterBtn'),loginError=document.getElementById('loginError');
-const startBtns=document.getElementsByClassName('startBtn'),logoutBtn=document.getElementById('logoutBtn'),backMenu=document.getElementById('backMenu');
-const quizTitle=document.getElementById('quizTitle'),cur=document.getElementById('cur'),tot=document.getElementById('tot'),questionArea=document.getElementById('questionArea');
-const prevQ=document.getElementById('prevQ'),nextQ=document.getElementById('nextQ'),submitBtn=document.getElementById('submitBtn'),resultArea=document.getElementById('resultArea');
-const alertMsg=document.getElementById('alertMsg');
+/* =====================================================
+   VARIABLES Y REFERENCIAS DEL DOM
+   ===================================================== */
+let state = {subject:null, idx:0, answers:[]}; // Estado actual del examen
+// Elementos principales
+const loginCard=document.getElementById('loginCard'),
+      menuCard=document.getElementById('menuCard'),
+      quizCard=document.getElementById('quizCard');
 
-// ======== FUNCIONES ========
-function show(e){e.classList.remove('hidden');}
-function hide(e){e.classList.add('hidden');}
+// Elementos de login
+const pin=document.getElementById('pin'),
+      enterBtn=document.getElementById('enterBtn'),
+      loginError=document.getElementById('loginError');
 
-function goMenu(){state.subject=null;state.idx=0;state.answers=[];hide(quizCard);show(menuCard);hide(alertMsg);}
-function startSubject(s){
-  state.subject=s;state.idx=0;
-  state.answers=Array(bank[s].questions.length).fill(null);
-  tot.textContent=bank[s].questions.length;
-  renderQuestion();
-  hide(menuCard);show(quizCard);
+// Elementos del menú y examen
+const startBtns=document.getElementsByClassName('startBtn'),
+      logoutBtn=document.getElementById('logoutBtn'),
+      backMenu=document.getElementById('backMenu'),
+      quizTitle=document.getElementById('quizTitle'),
+      cur=document.getElementById('cur'),
+      tot=document.getElementById('tot'),
+      questionArea=document.getElementById('questionArea'),
+      prevQ=document.getElementById('prevQ'),
+      nextQ=document.getElementById('nextQ'),
+      submitBtn=document.getElementById('submitBtn'),
+      resultArea=document.getElementById('resultArea'),
+      alertMsg=document.getElementById('alertMsg');
+
+/* =====================================================
+   FUNCIONES DE UTILIDAD
+   ===================================================== */
+
+// Muestra un elemento
+function show(e){ e.classList.remove('hidden'); }
+
+// Oculta un elemento
+function hide(e){ e.classList.add('hidden'); }
+
+/* =====================================================
+   FUNCIONES PRINCIPALES DE LA APP
+   ===================================================== */
+
+// 1️⃣ Validar PIN y mostrar el menú
+enterBtn.onclick=()=>{
+  if(pin.value==='1234'){         // Si el PIN es correcto
+    hide(loginCard);              // Oculta pantalla de login
+    show(menuCard);               // Muestra el menú principal
+  }else{
+    loginError.textContent='PIN incorrecto.'; // Muestra error
+  }
+};
+
+// 2️⃣ Cerrar sesión (volver al login)
+logoutBtn.onclick=()=>{
+  hide(menuCard);
+  show(loginCard);
+};
+
+// 3️⃣ Iniciar una materia
+Array.from(startBtns).forEach(btn=>{
+  btn.onclick=(e)=>{
+    const materia = e.target.dataset.sub;  // Nombre del tema
+    startSubject(materia);                 // Inicia el examen
+  }
+});
+
+// 4️⃣ Función que prepara el examen de una materia
+function startSubject(sub){
+  state.subject=sub;                                      // Guarda materia actual
+  state.idx=0;                                            // Reinicia índice de pregunta
+  state.answers=Array(bank[sub].questions.length).fill(null); // Array vacío para respuestas
+  tot.textContent=bank[sub].questions.length;             // Total de preguntas
+  renderQuestion();                                       // Muestra la primera pregunta
+  hide(menuCard); show(quizCard);                         // Cambia de pantalla
 }
 
+// 5️⃣ Renderizar (mostrar) una pregunta
 function renderQuestion(){
-  const s=state.subject,i=state.idx,q=bank[s].questions[i];
-  quizTitle.textContent=bank[s].title;
-  cur.textContent=i+1;tot.textContent=bank[s].questions.length;
+  const s=state.subject, i=state.idx, q=bank[s].questions[i];
+  quizTitle.textContent=bank[s].title; // Título
+  cur.textContent=i+1;                 // Número de pregunta
+  tot.textContent=bank[s].questions.length;
+
+  // Limpia el área y crea la pregunta actual
   questionArea.innerHTML='';
   const qh=document.createElement('div');
   qh.innerHTML='<p><strong>'+q.q+'</strong></p>';
-  const opts=document.createElement('div');opts.className='options';
+
+  // Genera las opciones
+  const opts=document.createElement('div');
+  opts.className='options';
   q.options.forEach((opt,j)=>{
     const b=document.createElement('div');
     b.className='opt'+(state.answers[i]===j?' selected':'');
@@ -178,49 +333,78 @@ function renderQuestion(){
   });
   qh.appendChild(opts);
   questionArea.appendChild(qh);
+
+  // Controla botones siguiente/anterior
   prevQ.disabled=i===0;
   nextQ.disabled=i===bank[s].questions.length-1;
-  hide(resultArea); hide(alertMsg);
+
+  // Oculta mensajes antiguos
+  hide(resultArea);
+  hide(alertMsg);
 }
 
+// 6️⃣ Guardar la respuesta seleccionada
 function selectOption(qi,oi,el){
-  state.answers[qi]=oi;
+  state.answers[qi]=oi; // Guarda la opción elegida
+  // Resalta visualmente la opción elegida
   const opts=questionArea.querySelectorAll('.opt');
   opts.forEach(o=>o.classList.remove('selected'));
   el.classList.add('selected');
 }
 
-// ======== EVENTOS ========
-enterBtn.onclick=()=>{
-  if(pin.value==='1234'){
-    hide(loginCard);show(menuCard);
-  }else{
-    loginError.textContent='PIN incorrecto.';
-  }
+// 7️⃣ Navegación entre preguntas
+prevQ.onclick=()=>{ if(state.idx>0){ state.idx--; renderQuestion(); } }
+nextQ.onclick=()=>{ if(state.idx<bank[state.subject].questions.length-1){ state.idx++; renderQuestion(); } }
+
+// 8️⃣ Volver al menú principal
+backMenu.onclick=()=>{
+  state.subject=null;
+  state.idx=0;
+  state.answers=[];
+  hide(quizCard);
+  show(menuCard);
+  hide(alertMsg);
 };
-Array.from(startBtns).forEach(b=>b.onclick=e=>startSubject(e.target.dataset.sub));
-logoutBtn.onclick=()=>{hide(menuCard);show(loginCard);}
-backMenu.onclick=goMenu;
-prevQ.onclick=()=>{if(state.idx>0){state.idx--;renderQuestion();}};
-nextQ.onclick=()=>{if(state.idx<bank[state.subject].questions.length-1){state.idx++;renderQuestion();}};
+
+// 9️⃣ Enviar examen
 submitBtn.onclick=()=>{
   const qs=bank[state.subject].questions;
+
+  // Verifica si hay preguntas sin responder
   if(state.answers.includes(null)){
     alertMsg.textContent='⚠️ Debes responder todas las preguntas antes de enviar.';
     show(alertMsg);
     return;
   }
-  hide(alertMsg);
-  let c=0;
-  for(let i=0;i<qs.length;i++)if(state.answers[i]===qs[i].a)c++;
-  resultArea.innerHTML=`<div><h3>Resultado</h3>
-    <p>Correctas: ${c} / ${qs.length}</p>
-    <p>Porcentaje: ${Math.round(c/qs.length*100)}%</p>
-    <button id="retake" class="btn ghost">Reintentar</button>
-    <button id="toMenu" class="btn link">Volver</button></div>`;
+
+  // Calcular aciertos
+  let correctas=0;
+  for(let i=0;i<qs.length;i++){
+    if(state.answers[i]===qs[i].a) correctas++;
+  }
+
+  // Mostrar resultado
+  const porcentaje=Math.round(correctas/qs.length*100);
+  resultArea.innerHTML=`
+    <div>
+      <h3>Resultado</h3>
+      <p>Correctas: ${correctas} / ${qs.length}</p>
+      <p>Porcentaje: ${porcentaje}%</p>
+      <button id="retake" class="btn ghost">Reintentar</button>
+      <button id="toMenu" class="btn link">Volver</button>
+    </div>`;
   show(resultArea);
-  document.getElementById('retake').onclick=()=>{state.answers=Array(bank[state.subject].questions.length).fill(null);state.idx=0;renderQuestion();};
-  document.getElementById('toMenu').onclick=goMenu;
+
+  // Botones dentro del resultado
+  document.getElementById('retake').onclick=()=>{
+    state.answers=Array(bank[state.subject].questions.length).fill(null);
+    state.idx=0;
+    renderQuestion();
+  };
+  document.getElementById('toMenu').onclick=()=>{
+    hide(quizCard);
+    show(menuCard);
+  };
 };
 </script>
 </body>
